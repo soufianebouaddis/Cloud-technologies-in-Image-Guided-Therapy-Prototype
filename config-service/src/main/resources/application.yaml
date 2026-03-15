@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/soufianebouaddis/config-igt-repo
+          default-label: main
+          search-paths: "/"
+          username: ${GIT_USERNAME}
+          password: ${GIT_TOKEN}      # GitHub Personal Access Token (not your password)
+          clone-on-start: true        # fail fast if repo unreachable at boot
+
+server:
+  port: 8888
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+    lease-renewal-interval-in-seconds: 30
+    health-check-url-path: /actuator/health
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    registry-fetch-interval-seconds: 30
+    service-url:
+      defaultZone: ${EUREKA_SERVER_ADDRESS:http://localhost:8761/eureka}
