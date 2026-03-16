@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package imaging;
+
+option java_multiple_files = true;
+option java_package = "os.org.imagingservice.grpc.proto";
+
+service ImagingService {
+  rpc ProcessImage(ImageRequest) returns (ImageResponse);
+}
+
+message ImageRequest {
+  int32 width = 1;
+  int32 height = 2;
+  bytes image = 3;
+}
+
+message ImageResponse {
+  bytes image = 1;
+}

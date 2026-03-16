@@ -3,6 +3,12 @@ spring:
     name: imaging-service
   config:
     import: optional:configserver:http://localhost:8888
+server:
+  port: 8082
+grpc:
+  cpp-service:
+    host: localhost
+    port: 50051
 eureka:
   instance:
     prefer-ip-address: true

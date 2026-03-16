@@ -9,8 +9,8 @@ spring:
           default-label: main
           search-paths: "/"
           username: ${GIT_USERNAME}
-          password: ${GIT_TOKEN}      # GitHub Personal Access Token (not your password)
-          clone-on-start: true        # fail fast if repo unreachable at boot
+          password: ${GIT_TOKEN}
+          clone-on-start: true
 
 server:
   port: 8888
