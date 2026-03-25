@@ -15,7 +15,6 @@ private:
     std::unique_ptr<ImagingService::Stub> stub_;
 
 public:
-
     ImagingClient(std::shared_ptr<Channel> channel)
         : stub_(ImagingService::NewStub(channel)) {}
 
