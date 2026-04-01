@@ -16,7 +16,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 ollama:
   base-url: http://localhost:11434
-  model: medgemma:4b
+  model: dcarrascosa/medgemma-1.5-4b-it:Q4_K_M
 
 eureka:
   instance:
