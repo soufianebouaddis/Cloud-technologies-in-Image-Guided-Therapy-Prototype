@@ -28,7 +28,7 @@ public class FrameConsumer {
         log.info("Received processed frame {} for AI analysis", event.frameId());
 
         long start = System.currentTimeMillis();
-        OllamaFinding finding = ollamaClient.analyze(event.decodePixelData());
+        OllamaFinding finding = ollamaClient.analyze(event.decodePixelData(), event.width(), event.height());
         long inferenceMs = System.currentTimeMillis() - start;
 
         AnalysisResult result = new AnalysisResult(

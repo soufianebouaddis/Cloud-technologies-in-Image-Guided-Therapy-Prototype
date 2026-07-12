@@ -4,12 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.handler.BinaryWebSocketHandler;
+import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
 import java.util.concurrent.CountDownLatch;
 
-public class SimulatorWebSocketHandler extends BinaryWebSocketHandler {
+public class SimulatorWebSocketHandler extends AbstractWebSocketHandler {
 
     private static final Logger log = LoggerFactory.getLogger(SimulatorWebSocketHandler.class);
 
@@ -27,6 +28,12 @@ public class SimulatorWebSocketHandler extends BinaryWebSocketHandler {
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
         byte[] payload = message.getPayload().array();
         log.info("Received denoised frame: {} bytes", payload.length);
+    }
+
+    @Override
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) {
+        // imaging-service pushes AI findings back to the client as JSON text.
+        log.info("Received AI finding: {}", message.getPayload());
     }
 
     @Override

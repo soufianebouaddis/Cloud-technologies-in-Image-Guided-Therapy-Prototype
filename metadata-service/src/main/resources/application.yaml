@@ -7,13 +7,17 @@ spring:
     bootstrap-servers: localhost:9092
     consumer:
       group-id: metadata-service
+      auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "os.org.*"
+        # Producers stamp their own package in __TypeId__; ignore it and bind to the local DTO.
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: os.org.metadataservice.dto.AnalysisResult
   data:
     mongodb:
-      uri: mongodb://localhost:27017/igt-metadata
+      uri: mongodb://admin:admin@localhost:27017/igt-metadata?authSource=admin
 server:
   port: 8084
 eureka:

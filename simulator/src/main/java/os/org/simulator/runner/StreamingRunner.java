@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 
+import jakarta.websocket.ContainerProvider;
+import jakarta.websocket.WebSocketContainer;
+
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,7 +44,14 @@ public class StreamingRunner implements CommandLineRunner {
         }
 
         SimulatorWebSocketHandler handler = new SimulatorWebSocketHandler();
-        StandardWebSocketClient client = new StandardWebSocketClient();
+
+        // Denoised frames returned by imaging-service are multi-megabyte; raise the
+        // client buffers above the 8 KB default so they aren't rejected with code 1009.
+        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+        container.setDefaultMaxBinaryMessageBufferSize(16 * 1024 * 1024);
+        container.setDefaultMaxTextMessageBufferSize(1 * 1024 * 1024);
+        container.setAsyncSendTimeout(30_000);
+        StandardWebSocketClient client = new StandardWebSocketClient(container);
 
         log.info("Connecting to imaging-service at {}", wsUrl);
         client.execute(handler, wsUrl);

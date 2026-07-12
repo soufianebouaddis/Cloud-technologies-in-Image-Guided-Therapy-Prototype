@@ -8,12 +8,21 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        # DICOM frames are multi-megabyte once base64-encoded; the 1 MB default rejects them.
+        max.request.size: 10485760
+        compression.type: gzip
     consumer:
       group-id: imaging-service
+      auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "os.org.*"
+        max.partition.fetch.bytes: 10485760
+        # Producers stamp their own package in __TypeId__; ignore it and bind to the local DTO.
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: os.org.imagingservice.dto.AnalysisResult
 server:
   port: 8082
 grpc:
